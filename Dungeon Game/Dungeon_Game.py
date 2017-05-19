@@ -1,3 +1,4 @@
+import os
 import random
 
 #draw grid
@@ -26,6 +27,22 @@ def get_locations():
     
     return monster, door, player
 
+def move_player(player, move):
+    # get the player's location
+    # if move == LEFT, x-1
+    # if move == RIGHT, x+1
+    # if move == UP, y-1
+    # if move == DOWN, y+1
+    return player
+
+def get_moves(player):
+    moves = ["UP", "DOWN", "LEFT", "RIGHT"]
+    #if players' y == 0, they cannot move UP
+    #if player's y == 4, they cannot move DOWN
+    #if player's x == 0, they cannot move LEFT
+    #if player's x == 4, they cannot move RIGHT
+    return moves
+
 while True:
     print("Welcome to Dungeon!")
     print("You are currently in room {}" ) #Fill with player position
@@ -40,4 +57,6 @@ while True:
         
     #good move? change the players position
     #bad move? Don't change anything
-    #On the door?
+    #On the door? They win!
+    #On the monster? They lose!
+    #Otherwise, loop back again :)
