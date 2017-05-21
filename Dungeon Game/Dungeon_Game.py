@@ -61,32 +61,67 @@ def get_moves(player):
         moves.remove("RIGHT")
     return moves
 
+def draw_map(player):
+    print(" _"*5)
+    tile = "|{}"
+    
+    for cell in CELLS:
+        x, y = cell
+        if x<4:
+            line_end = ""
+            if cell == player:
+                output = tile.format("X")
+            else:
+                output = tile.format("_")
+        else:
+            line_end = "\n"
+            if cell == player:
+                output = tile.format("X|")
+            else:
+                output = tile.format("_|")
+        print(output, end = line_end)
+            
 
-monster, door, player = get_locations()
-
-while True:
-    valid_moves = get_moves(player)
-    clear_screen()
-    print("Welcome to Dungeon!")
-    print("You are currently in room {}".format(player)) #Fill with player position
-    print("You can move {}".format(", ".join(valid_moves))) # Fill with available moves
-    print("Enter QUIT to quit")
+def game_loop():
+    monster, door, player = get_locations()
+    playing = True
     
-    move = input("> ")
-    move = move.upper()
-    
-    if move == 'QUIT':
-        break
-    
-    if move in valid_moves:
-        player = move_player(player, move)
+    while playing:
+        clear_screen()
+        draw_map(player)
+        valid_moves = get_moves(player)
+        print("You are currently in room {}".format(player)) #Fill with player position
+        print("You can move {}".format(", ".join(valid_moves))) # Fill with available moves
+        print("Enter QUIT to quit")
         
+        move = input("> ")
+        move = move.upper()
+        
+        if move == 'QUIT':
+            print("Bye, Hope to see you soon!!")
+            break
+        
+        if move in valid_moves:
+            player = move_player(player, move)
+            
+            if player == monster:
+                print("\n ** Oh no, the monsters from the Baktun Era ate away your entire body :( ** \n")
+                playing = False
+            
+            if player == door:
+                print("\n **You escaped, you are free now! ** \n")
+                playing = False
+            
+        else:
+            input("\n** Walls are hard, don't run into them, LMAO!! **\n")
+            
     else:
-        print("\n** Walls are hard, don't run into them, LMAO!! **\n")
-        continue
-        
-    #good move? change the players position
-    #bad move? Don't change anything
-    #On the door? They win!
-    #On the monster? They lose!
-    #Otherwise, loop back again :)
+        if input("Wanna play again? Y/n").lower() != 'n':
+            game_loop()
+            
+            
+clear_screen()
+print("Welcome to Dungeon!")
+input("Press Return to start")
+clear_screen()
+game_loop()
